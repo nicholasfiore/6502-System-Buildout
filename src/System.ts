@@ -25,7 +25,7 @@ export class System {
         console.log("Hello TSIRAM!");
 
 
-        this._CPU = new Cpu(this);
+        this._CPU = new Cpu();
         
         /*
         Start the system (Analogous to pressing the power button and having voltages flow through the components)
