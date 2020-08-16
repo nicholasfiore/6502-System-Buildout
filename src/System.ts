@@ -34,7 +34,6 @@ export class System {
          */
 
         this.startSystem();
-        //this.log("System running status: " + this.running);
 
     }
 
