@@ -39,6 +39,10 @@ export class System extends Hardware{
     }
 
     public startSystem(): boolean {
+        /* debugging lines to test functionality of the console logging for hardware initialization */
+        //this.debug = false;
+        //this._CPU.debug = false;
+        
         this.log();
         this._CPU.log();
         
