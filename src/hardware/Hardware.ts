@@ -6,8 +6,6 @@ export class Hardware {
     public name: string;
     public debug: boolean = true;
 
-    public dateTime: Date = new Date();
-
     /**
      * logs the name, id, time message to the console, passing a "created" message afterwards to confirm initialization
      */
