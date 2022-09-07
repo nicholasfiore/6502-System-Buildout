@@ -30,6 +30,7 @@ export class System extends Hardware{
         this.id = 0;
         this.name = "System";
 
+        //creating objects for the system hardware
         this._CPU = new Cpu();
         this._MEM = new Memory();
         /*
@@ -46,6 +47,9 @@ export class System extends Hardware{
         //this.debug = false;
         //this._CPU.debug = false;
         //this._MEM.debug = false;
+
+        //begins memory initialization by setting all addresses to 0x00
+        this._MEM.initMemory();
         
         this.log();
         this._CPU.log();
