@@ -1,4 +1,4 @@
-//imports
+//imports for System
 import {System} from "../System";
 import {Hardware} from "./Hardware";
 
