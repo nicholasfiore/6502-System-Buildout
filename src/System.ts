@@ -54,6 +54,8 @@ export class System extends Hardware{
         this.log();
         this._CPU.log();
         this._MEM.log();
+
+        //this._MEM.displayMemory();
         
         return true;
     }
