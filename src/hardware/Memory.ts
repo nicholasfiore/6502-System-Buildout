@@ -20,15 +20,14 @@ export class Memory extends Hardware{
      * Initializes the Memory object by completely filling the array with the default values of 0x00
      */
     initMemory() {
-        this.memSize = 256;
-        for (let i = 0; i < this.memSize; i += 16) {
-            this.memArray[i] = 0;
-            console.log(this.memArray[i]);
+        this.memSize = 65536;
+        for (let i = 0x00; i < this.memSize; i += 0x01) {
+            this.memArray[i] = 0x00;
         }
     }
 
-    displayMemory() {
-        
+    displayMemory(address: number) {
+        console.log("[HW - " + this.name + " id: " + this.id + " - " + Date.now() + "]: Address: " + this.hexLog(address, 2) + " Contains Value: " + this.hexLog(this.memArray[address], 2));
     }
 
 }

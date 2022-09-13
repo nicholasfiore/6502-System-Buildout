@@ -14,8 +14,8 @@ export class Hardware {
             console.log("[HW - " + this.name + " id: " + this.id + " - " + Date.now() + "]: created");
     }
 
-    public hexLog(num: number) {
-        num.toString(16).toUpperCase();
+    public hexLog(num: number, len: number) {
+        return num.toString(16).toUpperCase();
     }
 
 }
