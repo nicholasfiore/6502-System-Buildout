@@ -51,11 +51,11 @@ export class System extends Hardware{
         //begins memory initialization by setting all addresses to 0x00
         this._MEM.initMemory();
         
-        this.log();
-        this._CPU.log();
-        this._MEM.log();
+        this.log("created");
+        this._CPU.log("created");
+        this._MEM.log("created");
 
-        this._MEM.displayMemory(0x00);
+        this._MEM.displayMemory(0x00, 0x14);
         
         return true;
     }

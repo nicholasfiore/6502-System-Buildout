@@ -9,13 +9,15 @@ export class Hardware {
     public debug: boolean = true;
 
     //logs the name, id, time message to the console, passing a "created" message afterwards to confirm initialization
-    public log() {
+    public log(args: String) {
         if (this.debug === true)
-            console.log("[HW - " + this.name + " id: " + this.id + " - " + Date.now() + "]: created");
+            console.log("[HW - " + this.name + " id: " + this.id + " - " + Date.now() + "]: " + args);
     }
 
-    public hexLog(num: number, len: number) {
-        return num.toString(16).toUpperCase();
+    //converts a decimal number to a hex string, with a total amount of digits depending on length.
+    //Unused digits are padded by leading zeros.
+    public hexLog(num: number, length: number) {
+        return num.toString(16).padStart(length, '0').toUpperCase();
     }
 
 }
