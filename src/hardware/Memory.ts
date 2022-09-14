@@ -30,7 +30,7 @@ export class Memory extends Hardware{
     //Displays a range of memory addresses from a starting address, and including all addresses after with a length.
     displayMemory(startAdd: number, length: number) {
         for (let i = startAdd; i < (startAdd + length); i++) {
-            this.log("Memory address: " + this.hexLog(i, 4) + " contains: " + this.hexLog(this.memArray[i], 2));
+            this.log("Memory address: " + this.hexLog(i, 4) + " contains Value: " + this.hexLog(this.memArray[i], 2));
         }
     }
 

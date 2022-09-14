@@ -51,6 +51,7 @@ export class System extends Hardware{
         //begins memory initialization by setting all addresses to 0x00
         this._MEM.initMemory();
         
+        //logs all hardware pieces
         this.log("created");
         this._CPU.log("created");
         this._MEM.log("created");
