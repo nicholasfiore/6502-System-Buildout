@@ -1,8 +1,9 @@
 //imports for Memory
 import {System} from "../System";
 import {Hardware} from "./Hardware";
+import { ClockListener } from "./imp/ClockListener";
 
-export class Memory extends Hardware{
+export class Memory extends Hardware implements ClockListener {
     /**
      * memSize used for the max size of the array (in hex), which is the size of the memory
      * memArray is the array containing the hex values stored in memory (8 bits per index)
@@ -34,4 +35,8 @@ export class Memory extends Hardware{
         }
     }
 
+    //pulse method for the ClockListener interface
+    pulse() {
+        this.log("received clock pulse");
+    }
 }

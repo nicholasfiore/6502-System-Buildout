@@ -1,4 +1,6 @@
 // import statements for hardware
+import { listeners } from "process";
+import { Clock } from "./hardware/Clock";
 import {Cpu} from "./hardware/Cpu";
 import {Hardware} from "./hardware/Hardware";
 import {Memory} from "./hardware/Memory";
@@ -19,6 +21,7 @@ export class System extends Hardware{
 
     private _CPU : Cpu = null;
     private _MEM : Memory = null;
+    private _CLK : Clock = null;
     
     public running: boolean = false;
 
@@ -33,6 +36,7 @@ export class System extends Hardware{
         //creating objects for the system hardware
         this._CPU = new Cpu();
         this._MEM = new Memory();
+        this._CLK = new Clock();
         /*
         Start the system (Analogous to pressing the power button and having voltages flow through the components)
         When power is applied to the system clock, it begins sending pulses to all clock observing hardware
@@ -54,9 +58,18 @@ export class System extends Hardware{
         //logs all hardware pieces
         this.log("created");
         this._CPU.log("created");
+        this.listeners.push(this._CPU);
         this._MEM.log("created");
+        this._CLK.log("created");
 
-        this._MEM.displayMemory(0x00, 0x14);
+        console.log(this.listeners[0]);
+        console.log(this.listeners[1]);
+
+
+
+        //this._MEM.displayMemory(0x00, 0x14);
+
+
         
         return true;
     }
