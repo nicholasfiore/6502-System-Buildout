@@ -4,17 +4,17 @@ import {Hardware} from "./Hardware";
 import { ClockListener } from "./imp/ClockListener";
 
 export class Cpu extends Hardware implements ClockListener {
-    private cpuClockCounter : number;
+    private cpuClockCount : number;
     constructor() {
         super();
-        this.cpuClockCounter = 0;
+        this.cpuClockCount = 0;
         this.name = "Cpu";
         this.id = 0;
     }
 
-    //Pulse method for ClockListener class
-    pulse() {
-        this.cpuClockCounter++;
-        this.log("received clock pulse - CPU Clock Count: ");
+    //Pulse method for ClockListener interface
+    public pulse() {
+        this.cpuClockCount++;
+        this.log("received clock pulse - CPU Clock Count: " + this.cpuClockCount);
     }
 }

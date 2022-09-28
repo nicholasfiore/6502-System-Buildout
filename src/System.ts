@@ -55,20 +55,20 @@ export class System extends Hardware{
         //begins memory initialization by setting all addresses to 0x00
         this._MEM.initMemory();
         
-        //logs all hardware pieces
+        //initial logs for all hardware pieces
         this.log("created");
         this._CPU.log("created");
-        this.listeners.push(this._CPU);
         this._MEM.log("created");
         this._CLK.log("created");
 
-        console.log(this.listeners[0]);
-        console.log(this.listeners[1]);
+        //adds all clock listeners to the array in the _CLK object
+        this._CLK.setCL(this._CPU);
+        this._CLK.setCL(this._MEM);
 
-
-
-        //this._MEM.displayMemory(0x00, 0x14);
-
+        //sets the interval that the clock will run at and begins sending pulses
+        setInterval(() => {
+            this._CLK.sendPulse();
+        }, CLOCK_INTERVAL);
 
         
         return true;

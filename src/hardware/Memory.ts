@@ -21,7 +21,7 @@ export class Memory extends Hardware implements ClockListener {
     
     // Initializes the Memory object by completely filling the array with the default values of 0x00
      
-    initMemory() {
+    public initMemory() {
         this.memSize = 0xFFFF;
         for (let i = 0x00; i < this.memSize; i += 0x01) {
             this.memArray[i] = 0x00;
@@ -29,14 +29,14 @@ export class Memory extends Hardware implements ClockListener {
     }
 
     //Displays a range of memory addresses from a starting address, and including all addresses after with a length.
-    displayMemory(startAdd: number, length: number) {
+    public displayMemory(startAdd: number, length: number) {
         for (let i = startAdd; i < (startAdd + length); i++) {
             this.log("Memory address: " + this.hexLog(i, 4) + " contains Value: " + this.hexLog(this.memArray[i], 2));
         }
     }
 
     //pulse method for the ClockListener interface
-    pulse() {
+    public pulse() {
         this.log("received clock pulse");
     }
 }

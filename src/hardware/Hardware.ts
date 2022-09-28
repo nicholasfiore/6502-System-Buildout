@@ -8,7 +8,6 @@ export class Hardware {
     public id: number;
     public name: string;
     public debug: boolean = true;
-    public listeners: Array<ClockListener>;
 
     //logs the name, id, time message to the console, passing a "created" message afterwards to confirm initialization
     public log(args: String) {
