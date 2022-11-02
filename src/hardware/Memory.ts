@@ -1,15 +1,18 @@
 //imports for Memory
 import {System} from "../System";
 import {Hardware} from "./Hardware";
-import { ClockListener } from "./imp/ClockListener";
+import {Mmu} from "./Mmu";
+import {ClockListener} from "./imp/ClockListener";
 
 export class Memory extends Hardware implements ClockListener {
     /**
      * memSize used for the max size of the array (in hex), which is the size of the memory
      * memArray is the array containing the hex values stored in memory (8 bits per index)
      */
-    private memSize: number;
+    private memSize: number = 0xFFFF;
     private memArray = [];
+    private mdr: number;
+    private mar: number;
     
     //Constuctor for memory, inherits Hardware and initializes inherited members
     constructor() {
@@ -19,10 +22,8 @@ export class Memory extends Hardware implements ClockListener {
     }
 
     
-    // Initializes the Memory object by completely filling the array with the default values of 0x00
-     
+    // Initializes the Memory object by completely filling the array with the default values of 0x00, or resets it when necessary
     public initMemory() {
-        this.memSize = 0xFFFF;
         for (let i = 0x00; i < this.memSize; i += 0x01) {
             this.memArray[i] = 0x00;
         }
@@ -38,5 +39,32 @@ export class Memory extends Hardware implements ClockListener {
     //pulse method for the ClockListener interface
     public pulse() {
         this.log("received clock pulse");
+    }
+
+    //reads the stored data at the memory address currently in the MAR and updates the MDR with it
+    public read() {
+        this.setMdr(this.memArray[this.mar]);
+    }
+
+    //updates the address in memory at the MAR with the data in the MDR
+    public write() {
+        this.memArray[this.mar] = this.mdr;
+    }
+
+    //Getters and setters for the MAR and MDR
+    public getMdr() {
+        return this.mdr;
+    }
+
+    public getMar() {
+        return this.mar;
+    }
+
+    public setMdr(newVal: number) {
+        this.mdr = newVal;
+    }
+
+    public setMar(newVal: number) {
+        this.mdr = newVal;
     }
 }

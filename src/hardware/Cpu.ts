@@ -1,7 +1,8 @@
 //imports for System
 import {System} from "../System";
 import {Hardware} from "./Hardware";
-import { ClockListener } from "./imp/ClockListener";
+import {Mmu} from "./Mmu";
+import {ClockListener} from "./imp/ClockListener";
 
 export class Cpu extends Hardware implements ClockListener {
     private cpuClockCount : number;
