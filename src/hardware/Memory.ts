@@ -17,7 +17,7 @@ export class Memory extends Hardware implements ClockListener {
     //Constuctor for memory, inherits Hardware and initializes inherited members
     constructor() {
         super();
-        this.name = "Mem";
+        this.name = "MEM";
         this.id = 0;
     }
 
@@ -58,6 +58,10 @@ export class Memory extends Hardware implements ClockListener {
 
     public getMar() {
         return this.mar;
+    }
+
+    public getMemSize() {
+        return this.memSize;
     }
 
     public setMdr(newVal: number) {

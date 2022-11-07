@@ -31,7 +31,7 @@ export class System extends Hardware{
         
         //initialization of members from the superclass constructor
         this.id = 0;
-        this.name = "System";
+        this.name = "SYS";
 
         //creating objects for the system hardware
         this._CPU = new Cpu();
@@ -58,7 +58,7 @@ export class System extends Hardware{
         //initial logs for all hardware pieces
         this.log("created");
         this._CPU.log("created");
-        this._MEM.log("created");
+        this._MEM.log("created - Addressable space : " + this._MEM.getMemSize());
         this._CLK.log("created");
 
         //adds all clock listeners to the array in the _CLK object

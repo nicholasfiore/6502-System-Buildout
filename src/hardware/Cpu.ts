@@ -9,7 +9,7 @@ export class Cpu extends Hardware implements ClockListener {
     constructor() {
         super();
         this.cpuClockCount = 0;
-        this.name = "Cpu";
+        this.name = "CPU";
         this.id = 0;
     }
 

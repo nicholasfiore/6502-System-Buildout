@@ -15,7 +15,7 @@ export class Clock extends Hardware{
 
     constructor() {
         super();
-        this.name = "Clk";
+        this.name = "CLK";
         this.id = 0;
     }
 
