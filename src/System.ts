@@ -54,16 +54,35 @@ export class System extends Hardware{
         this.debug = true;
         this._CPU.debug = true;
         this._MEM.debug = true;
-
-        //begins memory initialization by setting all addresses to 0x00
-        this._MEM.initMemory();
+        this._CLK.debug = true;
+        this._MMU.debug = true;
         
         //initial logs for all hardware pieces
         this.log("created");
         this._CPU.log("created");
         this._MEM.log("created - Addressable space : " + this._MEM.getMemSize());
         this._CLK.log("created");
-        this._MMU.log("Initialized Memory")
+        this._MMU.log("created");
+
+        //begins memory initialization by setting all addresses to 0x00
+        this._MEM.initMemory();
+        this._MMU.log("Initialized Memory");
+
+        //initialization of the "static" program
+        this._MMU.writeImmediate(0x0000, 0xA9);
+        this._MMU.writeImmediate(0x0001, 0x0D);
+        this._MMU.writeImmediate(0x0002, 0xA9);
+        this._MMU.writeImmediate(0x0003, 0x1D);
+        this._MMU.writeImmediate(0x0004, 0xA9);
+        this._MMU.writeImmediate(0x0005, 0x2D);
+        this._MMU.writeImmediate(0x0006, 0xA9);
+        this._MMU.writeImmediate(0x0007, 0x3F);
+        this._MMU.writeImmediate(0x0008, 0xA9);
+        this._MMU.writeImmediate(0x0009, 0xFF);
+        this._MMU.writeImmediate(0x000A, 0x00);
+
+        //dump test program + extra slots in memory
+        this._MMU.memoryDump(0x0000, 0x000F);
 
         //adds all clock listeners to the array in the _CLK object
         this._CLK.setCL(this._CPU);

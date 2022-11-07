@@ -42,4 +42,18 @@ export class Mmu extends Hardware {
         this.mem.setMdr(data);
         this.mem.write();
     }
+
+    public memoryDump(fromAddress: number, toAddress: number) {
+        let addr: number;
+        
+        console.log(this.log("Memory Dump: Debug"));
+        console.log(this.log("--------------------------------------"));
+        for(addr = fromAddress; addr <= toAddress; addr += 1) {
+            this.mem.setMar(addr);
+            this.mem.read();
+            console.log(this.log("Addr " + this.hexLog(addr, 4) + " | " + this.hexLog(this.mem.getMdr(), 2))
+        }
+        console.log(this.log("--------------------------------------"));
+        console.log(this.log("Memory Dump: Complete"));
+    }
 }
