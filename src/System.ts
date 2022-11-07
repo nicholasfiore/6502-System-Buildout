@@ -4,6 +4,7 @@ import { Clock } from "./hardware/Clock";
 import {Cpu} from "./hardware/Cpu";
 import {Hardware} from "./hardware/Hardware";
 import {Memory} from "./hardware/Memory";
+import { Mmu } from "./hardware/Mmu";
 
 /*
     Constants
@@ -22,6 +23,7 @@ export class System extends Hardware{
     private _CPU : Cpu = null;
     private _MEM : Memory = null;
     private _CLK : Clock = null;
+    private _MMU : Mmu = null;
     
     public running: boolean = false;
 
@@ -37,6 +39,7 @@ export class System extends Hardware{
         this._CPU = new Cpu();
         this._MEM = new Memory();
         this._CLK = new Clock();
+        this._MMU = new Mmu(this._MEM);
         /*
         Start the system (Analogous to pressing the power button and having voltages flow through the components)
         When power is applied to the system clock, it begins sending pulses to all clock observing hardware
@@ -48,9 +51,9 @@ export class System extends Hardware{
 
     public startSystem(): boolean {
         /* debugging lines to test functionality of the console logging for hardware initialization */
-        //this.debug = false;
-        //this._CPU.debug = false;
-        //this._MEM.debug = false;
+        this.debug = true;
+        this._CPU.debug = true;
+        this._MEM.debug = true;
 
         //begins memory initialization by setting all addresses to 0x00
         this._MEM.initMemory();
@@ -60,6 +63,7 @@ export class System extends Hardware{
         this._CPU.log("created");
         this._MEM.log("created - Addressable space : " + this._MEM.getMemSize());
         this._CLK.log("created");
+        this._MMU.log("Initialized Memory")
 
         //adds all clock listeners to the array in the _CLK object
         this._CLK.setCL(this._CPU);
@@ -69,6 +73,7 @@ export class System extends Hardware{
         setInterval(() => {
             this._CLK.sendPulse();
         }, CLOCK_INTERVAL);
+
 
         
         return true;

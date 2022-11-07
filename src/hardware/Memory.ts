@@ -69,6 +69,10 @@ export class Memory extends Hardware implements ClockListener {
     }
 
     public setMar(newVal: number) {
-        this.mdr = newVal;
+        this.mar = newVal;
+    }
+
+    public setMemSize(newVal: number) {
+        this.memSize = newVal;
     }
 }

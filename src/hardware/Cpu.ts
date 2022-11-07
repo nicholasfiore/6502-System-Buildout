@@ -5,7 +5,9 @@ import {Mmu} from "./Mmu";
 import {ClockListener} from "./imp/ClockListener";
 
 export class Cpu extends Hardware implements ClockListener {
+    
     private cpuClockCount : number;
+    
     constructor() {
         super();
         this.cpuClockCount = 0;
