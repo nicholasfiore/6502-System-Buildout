@@ -25,6 +25,10 @@ export class Mmu extends Hardware {
         this.mem.setMar(addr);
     }
 
+    public setMarFull(addr: number) {
+        this.mem.setMar(addr);
+    }
+
     public setMdr(val: number) {
         this.mem.setMdr(val);
     }
@@ -44,14 +48,14 @@ export class Mmu extends Hardware {
     }
 
     public memoryDump(fromAddress: number, toAddress: number) {
-        console.log(this.log("Memory Dump: Debug"));
-        console.log(this.log("--------------------------------------"));
-        for(let addr = fromAddress; addr <= toAddress; addr += 1) {
+        this.log("Memory Dump: Debug");
+        this.log("--------------------------------------");
+        for(let addr = fromAddress; addr <= toAddress; addr++) {
             this.mem.setMar(addr);
             this.mem.read();
-            console.log(this.log("Addr " + this.hexLog(addr, 4) + " | " + this.hexLog(this.mem.getMdr(), 2)));
+            this.log("Addr " + this.hexLog(addr, 4) + " | " + this.hexLog(this.mem.getMdr(), 2));
         }
-        console.log(this.log("--------------------------------------"));
-        console.log(this.log("Memory Dump: Complete"));
+        this.log("--------------------------------------");
+        this.log("Memory Dump: Complete");
     }
 }
