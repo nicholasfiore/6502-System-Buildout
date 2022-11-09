@@ -39,7 +39,7 @@ export class System extends Hardware{
         this._CPU = new Cpu();
         this._MEM = new Memory();
         this._CLK = new Clock();
-        this._MMU = new Mmu(this._MEM);
+        this._MMU = new Mmu(this._MEM, this._CPU);
         /*
         Start the system (Analogous to pressing the power button and having voltages flow through the components)
         When power is applied to the system clock, it begins sending pulses to all clock observing hardware

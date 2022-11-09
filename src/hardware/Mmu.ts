@@ -9,35 +9,36 @@ import { Memory } from "./Memory";
 export class Mmu extends Hardware {
 
     mem : Memory = null;
+    cpu : Cpu = null;
 
-    constructor(newMem : Memory) {
+    highOrderByte : number;
+    lowOrderByte :number;
+
+    constructor(newMem : Memory, newCpu : Cpu) {
         super();
         this.name = "MMU"
         this.id = 0;
         this.mem = newMem;
-    }
-
-    public setMarEndian(lowOrder: number, highOrder: number) {
-        let high : string = "" + highOrder;
-        let low : string = "" + lowOrder;
-        let addr : number = parseInt(high + low);
-        
-        this.mem.setMar(addr);
-    }
-
-    public setMarFull(addr: number) {
-        this.mem.setMar(addr);
-    }
-
-    public setMdr(val: number) {
-        this.mem.setMdr(val);
+        this.cpu = newCpu;
     }
 
     public read() {
+        let addr : number = (this.highOrderByte * 0x100) + this.lowOrderByte;
+        
+        this.mem.setMar(addr);
         this.mem.read();
     }
 
-    public write() {
+    public readImmediate(addr: number) {
+        this.mem.setMar(addr);
+        this.mem.read();
+    }
+
+    public write(data: number) {
+        let addr : number = (this.highOrderByte * 0x100) + this.lowOrderByte;
+
+        this.mem.setMar(addr);
+        this.mem.setMdr(data);
         this.mem.write();
     }
 
@@ -57,5 +58,22 @@ export class Mmu extends Hardware {
         }
         this.log("--------------------------------------");
         this.log("Memory Dump: Complete");
+    }
+
+    /* Accessors/Mutators */
+    public getHighOrderByte() : number {
+        return this.highOrderByte;
+    }
+
+    public getLowOrderByte() : number {
+        return this.lowOrderByte;
+    }
+
+    public setHighOrderByte(byte: number) {
+        this.highOrderByte = byte;
+    }
+
+    public setLowOrderByte(byte: number) { 
+        this.lowOrderByte = byte;
     }
 }
