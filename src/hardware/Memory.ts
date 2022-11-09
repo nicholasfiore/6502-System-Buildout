@@ -52,11 +52,11 @@ export class Memory extends Hardware implements ClockListener {
     }
 
     //Getters and setters for the MAR and MDR
-    public getMdr() {
+    public getMdr() : number {
         return this.mdr;
     }
 
-    public getMar() {
+    public getMar() : number {
         return this.mar;
     }
 
