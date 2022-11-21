@@ -29,7 +29,7 @@ export class Cpu extends Hardware implements ClockListener {
         this.cpuClockCount++;
         this.log("received clock pulse - CPU Clock Count: " + this.cpuClockCount);
 
-        switch
+        
 
     }
 }
