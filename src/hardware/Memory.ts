@@ -44,11 +44,12 @@ export class Memory extends Hardware implements ClockListener {
     //reads the stored data at the memory address currently in the MAR and updates the MDR with it
     public read() {
         this.setMdr(this.memArray[this.mar]);
+        return this.getMdr();
     }
 
     //updates the address in memory at the MAR with the data in the MDR
     public write() {
-        this.memArray[this.mar] = this.mdr;
+        this.memArray[this.mar] = this.getMdr();
     }
 
     //Getters and setters for the MAR and MDR

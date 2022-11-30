@@ -1,11 +1,10 @@
-import { memoryUsage } from "process";
 import { Cpu } from "./Cpu";
 import { Hardware } from "./Hardware";
 import { Memory } from "./Memory";
 
 /* Memory Management Unit
-*  Handles communication and operations between memory and the CPU
-*/
+ * Handles communication and operations between memory and the CPU
+ */
 export class Mmu extends Hardware {
 
     mem : Memory = null;
@@ -14,26 +13,28 @@ export class Mmu extends Hardware {
     highOrderByte : number;
     lowOrderByte :number;
 
-    constructor(newMem : Memory, newCpu : Cpu) {
+    constructor(newMem : Memory) {
         super();
         this.name = "MMU"
         this.id = 0;
         this.mem = newMem;
-        this.cpu = newCpu;
     }
 
+    //reads the memory address stored in the high and low order bytes
     public read() {
         let addr : number = (this.highOrderByte * 0x100) + this.lowOrderByte;
         
         this.mem.setMar(addr);
-        this.mem.read();
+        return this.mem.read();
     }
 
+    //reads the memory address passed
     public readImmediate(addr: number) {
         this.mem.setMar(addr);
-        this.mem.read();
+        return this.mem.read();
     }
 
+    //writes the data provided into the address in the high and low order bytes
     public write(data: number) {
         let addr : number = (this.highOrderByte * 0x100) + this.lowOrderByte;
 
@@ -42,6 +43,7 @@ export class Mmu extends Hardware {
         this.mem.write();
     }
 
+    //writes the data provided into the address provided
     public writeImmediate(addr: number, data: number) {
         this.mem.setMar(addr);
         this.mem.setMdr(data);
