@@ -24,6 +24,7 @@ export class Cpu extends Hardware implements ClockListener {
     private zflag : boolean = false;
     private isAddr :  boolean = false;
     private noOperands : boolean = false;
+    private shutdownFlag : boolean = false;
 
     constructor(newMmu : Mmu) {
         super();
@@ -31,6 +32,13 @@ export class Cpu extends Hardware implements ClockListener {
         this.name = "CPU";
         this.id = 0;
         this.mmu = newMmu;
+    }
+
+    public logState() {
+        this.log("CPU State | Mode: " + 0 + " PC: " + this.hexLog(this.programCounter, 4) +
+            " IR: " + this.hexLog(this.instructionRegister, 2) + " Acc: " + this.hexLog(this.accumulator, 2) +
+            " xReg: " + this.hexLog(this.xReg, 2) + " yReg: " + this.hexLog(this.yReg, 2) + 
+            " zFlag: " + this.zflag + " Step: " + this.pipelineStep);
     }
 
     //Pulse method for ClockListener interface
@@ -65,7 +73,7 @@ export class Cpu extends Hardware implements ClockListener {
             case 3: {
                 if (!this.isAddr)
                     this.execute(data);
-                else
+                
                 break;
             }
             case 4: {
@@ -83,6 +91,10 @@ export class Cpu extends Hardware implements ClockListener {
     fetch() {
         this.instructionRegister = this.mmu.readImmediate(this.programCounter);
         this.programCounter++;
+        this.log("CPU State | Mode: " + 0 + " PC: " + this.hexLog(this.programCounter, 4) +
+            " IR: " + this.hexLog(this.instructionRegister, 2) + " Acc: " + this.hexLog(this.accumulator, 2) +
+            " xReg: " + this.hexLog(this.xReg, 2) + " yReg: " + this.hexLog(this.yReg, 2) + 
+            " zFlag: " + this.zflag + " Step: " + this.pipelineStep);
         return this.determineSteps();
     }
 
@@ -96,24 +108,112 @@ export class Cpu extends Hardware implements ClockListener {
         }
         this.mmu.readImmediate(this.programCounter);
         this.programCounter++;
+        this.logState();
+        return;
     }
 
     execute(byte : number) {
         //a switch statement holding all the instructions for what to do during the execution cycle
         //for every opcode
         switch (this.instructionRegister) {
-            case 0xA9: {
+            case 0xA9: { //loads the accumulator with a constant
                 this.accumulator = byte;
+                break;
+            }
+            case 0xAD: { //loads the accumulator with a value from memory
+                this.accumulator = this.mmu.read();
+                break;
+            }
+            case 0x8D: { //store the value in the accumulator in memory
+                this.mmu.write(this.accumulator);
+                break;
+            }
+            case 0x8A: { //load accu from x reg
+                this.accumulator = this.xReg;
+                break;
+            }
+            case 0x98: { //load accu from y reg
+                this.accumulator = this.yReg;
+                break;
+            }
+            case 0x6D: { //add with carry
+                this.accumulator += this.mmu.read();
+                break;
+            }
+            case 0xA2: { //load x reg with a constant
+                this.xReg = byte;
+                break;
+            }
+            case 0xAE: { //load x reg from memory
+                this.xReg = this.mmu.read();
+                break;
+            }
+            case 0xAA: { //load x from the accu
+                this.xReg = this.accumulator;
+                break;
+            }
+            case 0xA0: { //load y with constant
+                this.yReg = byte;
+                break;
+            }
+            case 0xAC: { //load y from memory
+                this.yReg = this.mmu.read();
+                break;
+            }
+            case 0xA8: { //load y from accu
+                this.yReg = this.accumulator;
+                break;
+            }
+            case 0xEA: { //no operation
+                break;
+            }
+            case 0x00: { //break
+                this.shutdownFlag = true;
+                break;
+            }
+            case 0xEC: { //compare a byte in mem to the x reg. Sets z flag to 1 (true) if equal
+                break;
+            }
+            case 0xD0: { //branch n bytes if z flag = 0 (false)
+                if (this.zflag) {
+                    this.programCounter += byte;
+                }
+                break;
+            }
+            case 0xEE: { //increment the value of a byte
+                if (this.pipelineStep === 3) { //put byte in accumulator
+                    this.accumulator = this.mmu.read();
+                } else if (this.pipelineStep === 4) {
+                    this.accumulator++;
+                }
+                break;
+            }
+            case 0xFF: {
+                switch(this.xReg) {
+                    case 0x01: { //print int in y reg
+
+                    }
+                    case 0x02: { //print string stored at address in the y reg, terminated by 0x00
+                        
+                    }
+                    case 0x03: { //print string stored at address in operand, terminated by 0x00
+                        
+                    }
+                    break;
+                }
             }
         }
+        this.logState();
     }
 
     writeBack() {
-
+        this.mmu.write(this.accumulator);
+        this.logState();
     }
 
     interruptCheck() {
 
+        this.logState();
     }
 
     //uses the opcode stored in the instruction register to determine the pipeline order
@@ -231,4 +331,9 @@ export class Cpu extends Hardware implements ClockListener {
             }
         }
     }
+
+    public getShutdownFlag() : boolean {
+        return this.shutdownFlag;
+    }
+
 }

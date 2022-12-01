@@ -92,6 +92,9 @@ export class System extends Hardware{
         //sets the interval that the clock will run at and begins sending pulses
         setInterval(() => {
             this._CLK.sendPulse();
+            if (this._CPU.getShutdownFlag()) {
+                this.stopSystem();
+            }
         }, CLOCK_INTERVAL);
 
 
