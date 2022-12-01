@@ -54,9 +54,9 @@ export class System extends Hardware{
         /* debugging lines to test functionality of the console logging for hardware initialization */
         this.debug = true;
         this._CPU.debug = true;
-        this._MEM.debug = true;
-        this._CLK.debug = true;
-        this._MMU.debug = true;
+        this._MEM.debug = false;
+        this._CLK.debug = false;
+        this._MMU.debug = false;
         
         //initial logs for all hardware pieces
         this.log("created");
