@@ -25,12 +25,15 @@ export class Mmu extends Hardware {
         let addr : number = (this.highOrderByte * 0x100) + this.lowOrderByte;
         
         this.mem.setMar(addr);
+        console.log("MAR: " + this.mem.getMar());
         return this.mem.read();
     }
 
     //reads the memory address passed
     public readImmediate(addr: number) {
         this.mem.setMar(addr);
+        console.log("MAR: " + this.mem.getMar());
+        console.log("Mem Read: " + this.hexLog(this.mem.read(), 2));
         return this.mem.read();
     }
 

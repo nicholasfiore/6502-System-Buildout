@@ -3,6 +3,7 @@ import {System} from "../System";
 import {Hardware} from "./Hardware";
 import {Mmu} from "./Mmu";
 import {ClockListener} from "./imp/ClockListener";
+import { Ascii } from "./Ascii";
 
 export class Cpu extends Hardware implements ClockListener {
     
@@ -105,6 +106,7 @@ export class Cpu extends Hardware implements ClockListener {
 
     fetch() {
         this.instructionRegister = this.mmu.readImmediate(this.programCounter);
+        console.log("MMU read: " + this.hexLog(this.mmu.readImmediate(this.programCounter), 2))
         this.programCounter++;
         return this.determineSteps();
     }
@@ -124,6 +126,8 @@ export class Cpu extends Hardware implements ClockListener {
         return;
     }
 
+    //a switch statement holding all the instructions for what to do during the execution cycle
+    //for every opcode
     execute(byte : number) {
         //a switch statement holding all the instructions for what to do during the execution cycle
         //for every opcode
@@ -188,9 +192,15 @@ export class Cpu extends Hardware implements ClockListener {
                     this.zFlag = true;
                 break;
             }
-            case 0xD0: { //branch n bytes if z flag = 0 (false)
+            case 0xD0: { //branch n bytes if z flag = 0 (false). Byte value is signed, using 2's complement.
+                let signedByte : number;
+                if (byte >= 0xF0) {
+                    signedByte = byte - 0xFF;
+                } else {
+                    signedByte = byte;
+                }
                 if (this.zFlag) {
-                    this.programCounter += byte;
+                    this.programCounter += signedByte;
                 }
                 break;
             }
@@ -205,13 +215,19 @@ export class Cpu extends Hardware implements ClockListener {
             case 0xFF: {
                 switch(this.xReg) {
                     case 0x01: { //print int in y reg
-                        process.stdout.write(this.yReg + "");
+                        process.stdout.write(this.hexLog(this.yReg, 2));
                     }
                     case 0x02: { //print string stored at address in the y reg, terminated by 0x00
-                        
+                        if (byte != 0x00) {
+                            process.stdout.write(Ascii.toAscii(this.mmu.readImmediate(this.yReg)) + "");
+                            this.stepQueue.unshift(1, 3);
+                        }
                     }
                     case 0x03: { //print string stored at address in operand, terminated by 0x00
-                        
+                        if (byte != 0x00) {
+                            process.stdout.write(Ascii.toAscii(this.mmu.read()) + "");
+                            this.stepQueue.unshift(1, 3);
+                        }
                     }
                     break;
                 }
@@ -332,16 +348,6 @@ export class Cpu extends Hardware implements ClockListener {
             }
         }
         return arr;
-    }
-
-    //a switch statement holding all the instructions for what to do during the execution cycle
-    //for every opcode
-    executionTable() {
-        switch (this.instructionRegister) {
-            case 0xA9: {
-                
-            }
-        }
     }
 
     public getShutdownFlag() : boolean {
