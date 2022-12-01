@@ -24,7 +24,7 @@ export class Cpu extends Hardware implements ClockListener {
     private yReg : number = 0x00;
 
     //flags
-    private zflag : boolean = false;
+    private zFlag : boolean = false;
     private isAddr :  boolean = false;
     private noOperands : boolean = false;
     private shutdownFlag : boolean = false;
@@ -41,7 +41,7 @@ export class Cpu extends Hardware implements ClockListener {
         this.log("CPU State | Mode: " + 0 + " PC: " + this.hexLog(this.programCounter, 4) +
             " IR: " + this.hexLog(this.instructionRegister, 2) + " Acc: " + this.hexLog(this.accumulator, 2) +
             " xReg: " + this.hexLog(this.xReg, 2) + " yReg: " + this.hexLog(this.yReg, 2) + 
-            " zFlag: " + this.zflag + " Step: " + this.pipelineStep);
+            " zFlag: " + this.zFlag + " Step: " + this.pipelineStep);
     }
 
     //Pulse method for ClockListener interface
@@ -184,10 +184,12 @@ export class Cpu extends Hardware implements ClockListener {
                 break;
             }
             case 0xEC: { //compare a byte in mem to the x reg. Sets z flag to 1 (true) if equal
+                if (this.mmu.read() === this.xReg)
+                    this.zFlag = true;
                 break;
             }
             case 0xD0: { //branch n bytes if z flag = 0 (false)
-                if (this.zflag) {
+                if (this.zFlag) {
                     this.programCounter += byte;
                 }
                 break;
