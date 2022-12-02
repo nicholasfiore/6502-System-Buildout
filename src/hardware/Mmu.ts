@@ -8,7 +8,6 @@ import { Memory } from "./Memory";
 export class Mmu extends Hardware {
 
     mem : Memory = null;
-    cpu : Cpu = null;
 
     highOrderByte : number;
     lowOrderByte :number;
@@ -21,20 +20,19 @@ export class Mmu extends Hardware {
     }
 
     //reads the memory address stored in the high and low order bytes
-    public read() {
+    public read() : number {
         let addr : number = (this.highOrderByte * 0x100) + this.lowOrderByte;
         
         this.mem.setMar(addr);
-        console.log("MAR: " + this.mem.getMar());
-        return this.mem.read();
+        let val = this.mem.read();
+        return val;
     }
 
     //reads the memory address passed
-    public readImmediate(addr: number) {
+    public readImmediate(addr: number) : number {
         this.mem.setMar(addr);
-        console.log("MAR: " + this.mem.getMar());
-        console.log("Mem Read: " + this.hexLog(this.mem.read(), 2));
-        return this.mem.read();
+        let val = this.mem.read();
+        return val;
     }
 
     //writes the data provided into the address in the high and low order bytes
@@ -57,8 +55,7 @@ export class Mmu extends Hardware {
         this.log("Memory Dump: Debug");
         this.log("--------------------------------------");
         for(let addr = fromAddress; addr <= toAddress; addr++) {
-            this.mem.setMar(addr);
-            this.mem.read();
+            this.readImmediate(addr);
             this.log("Addr " + this.hexLog(addr, 4) + " | " + this.hexLog(this.mem.getMdr(), 2));
         }
         this.log("--------------------------------------");

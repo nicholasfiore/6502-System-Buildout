@@ -50,7 +50,6 @@ export class Cpu extends Hardware implements ClockListener {
         this.cpuClockCount++;
         //this.log("received clock pulse - CPU Clock Count: " + this.cpuClockCount);
         this.logState();
-
         
         /* 
          * Current step will be represented by a number. They are listed below:
@@ -79,8 +78,8 @@ export class Cpu extends Hardware implements ClockListener {
                 break;
             }
             case 3: {
-                if (!this.isAddr)
-                    this.execute(this.data);
+                this.execute(this.data);
+                
                 this.pipelineStep = this.stepQueue.shift();
                 break;
             }
@@ -106,7 +105,6 @@ export class Cpu extends Hardware implements ClockListener {
 
     fetch() {
         this.instructionRegister = this.mmu.readImmediate(this.programCounter);
-        console.log("MMU read: " + this.hexLog(this.mmu.readImmediate(this.programCounter), 2))
         this.programCounter++;
         return this.determineSteps();
     }
@@ -121,7 +119,6 @@ export class Cpu extends Hardware implements ClockListener {
         } else if (this.pipelineStep === 2) {
             this.mmu.setHighOrderByte(this.mmu.readImmediate(this.programCounter));
         }
-        this.mmu.readImmediate(this.programCounter);
         this.programCounter++;
         return;
     }
@@ -199,7 +196,7 @@ export class Cpu extends Hardware implements ClockListener {
                 } else {
                     signedByte = byte;
                 }
-                if (this.zFlag) {
+                if (!this.zFlag) {
                     this.programCounter += signedByte;
                 }
                 break;
@@ -215,25 +212,28 @@ export class Cpu extends Hardware implements ClockListener {
             case 0xFF: {
                 switch(this.xReg) {
                     case 0x01: { //print int in y reg
-                        process.stdout.write(this.hexLog(this.yReg, 2));
+                        process.stdout.write(this.hexLog(this.yReg, 1));
+                        break;
                     }
                     case 0x02: { //print string stored at address in the y reg, terminated by 0x00
                         if (byte != 0x00) {
+                            this.programCounter = this.mmu.read();
                             process.stdout.write(Ascii.toAscii(this.mmu.readImmediate(this.yReg)) + "");
                             this.stepQueue.unshift(1, 3);
                         }
+                        break;
                     }
                     case 0x03: { //print string stored at address in operand, terminated by 0x00
                         if (byte != 0x00) {
+                            this.programCounter = this.mmu.read();
                             process.stdout.write(Ascii.toAscii(this.mmu.read()) + "");
                             this.stepQueue.unshift(1, 3);
                         }
+                        break;
                     }
-                    break;
                 }
             }
         }
-
     }
 
     writeBack() {
@@ -342,9 +342,6 @@ export class Cpu extends Hardware implements ClockListener {
                     this.isAddr = true;
                     break;
                 }
-            }
-            default: {
-                
             }
         }
         return arr;
