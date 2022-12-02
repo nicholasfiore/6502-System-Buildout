@@ -218,7 +218,7 @@ export class Cpu extends Hardware implements ClockListener {
                     case 0x02: { //print string stored at address in the y reg, terminated by 0x00
                         if (byte != 0x00) {
                             this.programCounter = this.mmu.read();
-                            console.log(this.hexLog(this.mmu.read(), 2));
+                            //console.log(this.hexLog(this.mmu.read(), 2));
                             process.stdout.write(Ascii.toAscii(this.mmu.readImmediate(this.yReg)) + "");
                             this.stepQueue.unshift(1, 3);
                         }
@@ -227,16 +227,19 @@ export class Cpu extends Hardware implements ClockListener {
                     case 0x03: { //print string stored at address in operand, terminated by 0x00
                         
                         //LOOK this isn't working because you don't have a way to properly set the program counter yet
-                        if (this.pipelineStep === 3){
-                            console.log(this.hexLog(this.mmu.getHighOrderByte(), 2));
-                            console.log(this.hexLog(this.mmu.getLowOrderByte(), 2));
-                            
-                            console.log(this.hexLog(this.mmu.read(), 2));
+                            //console.log(this.hexLog(this.mmu.getHighOrderByte(), 2));
+                            //console.log(this.hexLog(this.mmu.getLowOrderByte(), 2));
+                            //console.log(this.hexLog(this.mmu.read(), 2));
 
-                        } else if (this.pipelineStep === 4) {
-                            if (byte != 0x00) {
-                                process.stdout.write(Ascii.toAscii(this.mmu.read()) + "");
-                                this.stepQueue.unshift(1, 2, 3, 4);
+                        if (byte != 0x00) {
+                            process.stdout.write(Ascii.toAscii(this.mmu.read()) + "");
+                            this.stepQueue.unshift(3);
+                            if (this.mmu.getLowOrderByte() === 0xFF) {
+                                this.mmu.setHighOrderByte(this.mmu.getHighOrderByte() + 0x1);
+                                this.mmu.setLowOrderByte(0x00);
+                            }
+                            else {
+                                this.mmu.setLowOrderByte(this.mmu.getLowOrderByte() + 0x1);
                             }
                         }
                         break;
@@ -348,7 +351,7 @@ export class Cpu extends Hardware implements ClockListener {
                     this.noOperands = true;
                     break;
                 } else if (this.xReg === 0x03) {
-                    arr = [1, 2, 3, 4, 6];
+                    arr = [1, 2, 3, 6];
                     this.isAddr = true;
                     break;
                 }

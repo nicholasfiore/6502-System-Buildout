@@ -45,7 +45,6 @@ export class Memory extends Hardware implements ClockListener {
     public read() {
         this.setMdr(this.memArray[this.mar]);
         let val = this.getMdr();
-        console.log("MDR: " + this.hexLog(this.getMdr(), 2));
         return val;
     }
 
