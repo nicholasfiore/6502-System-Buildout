@@ -231,7 +231,7 @@ export class Cpu extends Hardware implements ClockListener {
                             //console.log(this.hexLog(this.mmu.getLowOrderByte(), 2));
                             //console.log(this.hexLog(this.mmu.read(), 2));
 
-                        if (byte != 0x00) {
+                        if (this.mmu.read() != 0x00) {
                             process.stdout.write(Ascii.toAscii(this.mmu.read()) + "");
                             this.stepQueue.unshift(3);
                             if (this.mmu.getLowOrderByte() === 0xFF) {
@@ -241,6 +241,9 @@ export class Cpu extends Hardware implements ClockListener {
                             else {
                                 this.mmu.setLowOrderByte(this.mmu.getLowOrderByte() + 0x1);
                             }
+                        }
+                        else {
+                            this.stepQueue = [6];
                         }
                         break;
                     }
