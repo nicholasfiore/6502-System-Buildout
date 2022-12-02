@@ -95,7 +95,7 @@ export class System extends Hardware{
     }
     
     public stopSystem(): boolean {
-
+        
         return false;
 
     }
