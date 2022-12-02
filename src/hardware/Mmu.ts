@@ -22,9 +22,11 @@ export class Mmu extends Hardware {
     //reads the memory address stored in the high and low order bytes
     public read() : number {
         let addr : number = (this.highOrderByte * 0x100) + this.lowOrderByte;
-        
+        console.log("Addr: " + this.hexLog(addr, 4));
         this.mem.setMar(addr);
+        console.log("MAR: " + this.hexLog(this.mem.getMar(), 4));
         let val = this.mem.read();
+        console.log("Read: " + this.hexLog(this.mem.read(), 2))
         return val;
     }
 
