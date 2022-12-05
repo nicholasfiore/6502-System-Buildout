@@ -5,14 +5,15 @@ import { InterruptController } from "./InterruptController";
 export class Keyboard extends Hardware implements Interrupt {
     irq : number;
     priority : number;
-
+    outputBuffer = [];
     interruptCon : InterruptController
 
     constructor(ic : InterruptController) {
         super();
         this.interruptCon = ic;
+        this.interruptCon.addDevice(this);
         this.name = "Keyboard";
-        this.irq = 2;
+        this.irq = 1;
         this.priority = 3;
     }
     
@@ -54,7 +55,7 @@ export class Keyboard extends Hardware implements Interrupt {
             // write the key to stdout all normal like
             //process.stdout.write( key);
             // put the key value in the buffer
-            this.outputBuffer.enqueue(keyPressed);
+            this.outputBuffer.push(keyPressed);
 
             // set the interrupt!
             this.interruptCon.acceptInterrupt(this);

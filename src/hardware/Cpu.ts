@@ -1,15 +1,16 @@
 //imports for System
-import {System} from "../System";
 import {Hardware} from "./Hardware";
 import {Mmu} from "./Mmu";
 import {ClockListener} from "./imp/ClockListener";
 import { Ascii } from "./Ascii";
+import { InterruptController } from "./InterruptController";
 
 export class Cpu extends Hardware implements ClockListener {
     
     private cpuClockCount : number;
     private mmu : Mmu;
-    
+    private intContr : InterruptController; 
+
     private pipelineStep : number = 0x00;
     private stepQueue = []; //used to keep track of the order of the pipeline steps
 
@@ -31,12 +32,13 @@ export class Cpu extends Hardware implements ClockListener {
     private shutdownFlag : boolean = false;
     private initialCall : boolean = true;
 
-    constructor(newMmu : Mmu) {
+    constructor(newMmu : Mmu, newIC : InterruptController) {
         super();
         this.cpuClockCount = 0;
         this.name = "CPU";
         this.id = 0;
         this.mmu = newMmu;
+        this.intContr = newIC;
     }
 
     public logState() {
@@ -265,7 +267,9 @@ export class Cpu extends Hardware implements ClockListener {
     }
 
     interruptCheck() {
-        
+        if (this.intContr.getInterruptQueue().length != 0) {
+            this.intContr.getInterruptQueue().shift();
+        }
     }
 
     //uses the opcode stored in the instruction register to determine the pipeline order

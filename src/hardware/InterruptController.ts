@@ -12,15 +12,23 @@ export class InterruptController extends Hardware {
 
     }
 
-    acceptInterrupt(device : any) {
+    acceptInterrupt(device : Interrupt) {
         if (this.interruptQueue.length > 0) {
             for(let e of this.interruptQueue) {
-                if (e.getPriority() < device.getPriority()) {
+                if (e.priority < device.priority) {
                     this.interruptQueue.splice(this.interruptQueue.indexOf(e), 0, device);
                 }
             }
         } else {
             this.interruptQueue.push(device);
         }
+    }
+
+    public addDevice(device : Interrupt) {
+        this.connectedHardware.push(device);
+    }
+
+    public getInterruptQueue() {
+        return this.interruptQueue;
     }
 }
