@@ -9,7 +9,6 @@ export class InterruptController extends Hardware {
 
     constructor() {
         super();
-
     }
 
     acceptInterrupt(device : Interrupt) {
@@ -28,7 +27,12 @@ export class InterruptController extends Hardware {
         this.connectedHardware.push(device);
     }
 
-    public getInterruptQueue() {
-        return this.interruptQueue;
+    public queueSize() {
+        return this.interruptQueue.length;
+    }
+
+    public getNextInQueue() { //returns the interrupt at the beginning of the array
+        let retVal = this.interruptQueue.shift();
+        return retVal;
     }
 }

@@ -4,6 +4,7 @@ import {Mmu} from "./Mmu";
 import {ClockListener} from "./imp/ClockListener";
 import { Ascii } from "./Ascii";
 import { InterruptController } from "./InterruptController";
+import { Console } from "console";
 
 export class Cpu extends Hardware implements ClockListener {
     
@@ -267,9 +268,12 @@ export class Cpu extends Hardware implements ClockListener {
     }
 
     interruptCheck() {
-        if (this.intContr.getInterruptQueue().length != 0) {
-            this.intContr.getInterruptQueue().shift();
+        let interrupt;
+        if (this.intContr.queueSize() != 0) {
+            interrupt = this.intContr.getNextInQueue;
+            process.stdout.write("test");
         }
+            
     }
 
     //uses the opcode stored in the instruction register to determine the pipeline order

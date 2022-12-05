@@ -5,6 +5,7 @@ import { InterruptController } from "./InterruptController";
 export class Keyboard extends Hardware implements Interrupt {
     irq : number;
     priority : number;
+    intName : String;
     outputBuffer = [];
     interruptCon : InterruptController
 
@@ -13,6 +14,7 @@ export class Keyboard extends Hardware implements Interrupt {
         this.interruptCon = ic;
         this.interruptCon.addDevice(this);
         this.name = "Keyboard";
+        this.intName = "DS/2 KB"
         this.irq = 1;
         this.priority = 3;
     }

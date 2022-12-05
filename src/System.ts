@@ -3,6 +3,8 @@ import { listeners } from "process";
 import { Clock } from "./hardware/Clock";
 import {Cpu} from "./hardware/Cpu";
 import {Hardware} from "./hardware/Hardware";
+import { InterruptController } from "./hardware/InterruptController";
+import { Keyboard } from "./hardware/Keyboard";
 import {Memory} from "./hardware/Memory";
 import { Mmu } from "./hardware/Mmu";
 
@@ -24,6 +26,8 @@ export class System extends Hardware{
     private _MEM : Memory = null;
     private _CLK : Clock = null;
     private _MMU : Mmu = null;
+    private _ITC : InterruptController = null;
+    private _KBD : Keyboard = null;
     
     public running: boolean = false;
 
@@ -39,8 +43,10 @@ export class System extends Hardware{
         
         this._MEM = new Memory();
         this._CLK = new Clock();
+        this._ITC = new InterruptController();
+        this._KBD = new Keyboard(this._ITC);
         this._MMU = new Mmu(this._MEM);
-        this._CPU = new Cpu(this._MMU);
+        this._CPU = new Cpu(this._MMU, this._ITC);
         /*
         Start the system (Analogous to pressing the power button and having voltages flow through the components)
         When power is applied to the system clock, it begins sending pulses to all clock observing hardware
