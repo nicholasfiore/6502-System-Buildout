@@ -82,9 +82,9 @@ export class System extends Hardware{
         this._MMU.log("Initialized Memory");
 
         //initialization of a "static" program
-        //this.labThreeStaticProgram();
-        this.powersProgram();
-        // this.systemCallProgram();
+        // this.labThreeStaticProgram();
+        // this.powersProgram();
+        this.systemCallProgram();
 
         //dump test program + extra slots in memory
         //this._MMU.memoryDump(0x0000, 0x000F);

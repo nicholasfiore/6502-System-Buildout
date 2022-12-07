@@ -187,7 +187,7 @@ export class Cpu extends Hardware implements ClockListener {
                 break;
             }
             case 0x00: { //break
-                this.shutdownFlag = true;
+                process.exit();
                 break;
             }
             case 0xEC: { //compare a byte in mem to the x reg. Sets z flag to 1 (true) if equal
