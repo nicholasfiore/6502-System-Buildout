@@ -540,12 +540,33 @@ export class Ascii {
         return retChar;
     }
     
-    public static toBinary(character : String) {
-        let retVal : number;
-        switch (character){
-            case "\0": {
+    // public static toBinary(character : String) {
+    //     let retVal : number;
+    //     switch (character){
+    //         case "\0": {
+    //             retVal = 0x0;
+    //         }
+    //         case "\b": {
+    //             retVal = 0x8;
+    //         }
+    //         case "\t": {
+    //             retVal = 0x9;
+    //             break;
+    //         }
+    //         case "\n": {
+    //             retVal = 0xA;
+    //             break;
+    //         }
+    //         case "\v": {
+    //             retVal = 0xB;
+    //             break;
+    //         }
+    //         case "\f": {
+    //             retVal = 0xC;
+    //             break;
+    //         }
 
-            }
-        }
-    }
+    //     }
+    //     return retVal;
+    // }
 }
