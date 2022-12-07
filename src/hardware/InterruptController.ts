@@ -9,6 +9,8 @@ export class InterruptController extends Hardware {
 
     constructor() {
         super();
+        this.id = 0;
+        this.name = "INT";
     }
 
     acceptInterrupt(device : Interrupt) {

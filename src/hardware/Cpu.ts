@@ -5,6 +5,7 @@ import {ClockListener} from "./imp/ClockListener";
 import { Ascii } from "./Ascii";
 import { InterruptController } from "./InterruptController";
 import { Console } from "console";
+import { System } from "../System";
 
 export class Cpu extends Hardware implements ClockListener {
     
@@ -196,8 +197,8 @@ export class Cpu extends Hardware implements ClockListener {
             }
             case 0xD0: { //branch n bytes if z flag = 0 (false). Byte value is signed, using 2's complement.
                 let signedByte : number;
-                if (byte >= 0xF0) {
-                    signedByte = byte - 0xFF;
+                if (byte >= 0x80) {
+                    signedByte = byte - 0x100;
                 } else {
                     signedByte = byte;
                 }
