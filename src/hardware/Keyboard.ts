@@ -13,10 +13,12 @@ export class Keyboard extends Hardware implements Interrupt {
         super();
         this.interruptCon = ic;
         this.interruptCon.addDevice(this);
-        this.name = "Keyboard";
+        this.id = 0;
+        this.name = "I/O";
         this.intName = "DS/2 KB"
         this.irq = 1;
         this.priority = 3;
+        this.monitorKeys();
     }
     
     private monitorKeys() {
@@ -37,15 +39,14 @@ export class Keyboard extends Hardware implements Interrupt {
         stdin.resume();
 
         // i don't want binary, do you?
-        stdin.setEncoding( 'utf8' );
-        //stdin.setEncoding(null);
+        // stdin.setEncoding( 'utf8' );
+        stdin.setEncoding(null);
 
 
         stdin.on( 'data', function( key ){
             //let keyPressed : String = key.charCodeAt(0).toString(2);
             //while(keyPressed.length < 8) keyPressed = "0" + keyPressed;
             let keyPressed: String = key.toString();
-
             this.log("Key pressed - " + keyPressed);
 
             // ctrl-c ( end of text )
@@ -58,10 +59,8 @@ export class Keyboard extends Hardware implements Interrupt {
             //process.stdout.write( key);
             // put the key value in the buffer
             this.outputBuffer.push(keyPressed);
-
             // set the interrupt!
             this.interruptCon.acceptInterrupt(this);
-
             // .bind(this) is required when running an asynchronous process in node that wishes to reference an
             // instance of an object.
         }.bind(this));

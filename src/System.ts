@@ -47,6 +47,8 @@ export class System extends Hardware{
         this._KBD = new Keyboard(this._ITC);
         this._MMU = new Mmu(this._MEM);
         this._CPU = new Cpu(this._MMU, this._ITC);
+
+        
         /*
         Start the system (Analogous to pressing the power button and having voltages flow through the components)
         When power is applied to the system clock, it begins sending pulses to all clock observing hardware
@@ -63,6 +65,8 @@ export class System extends Hardware{
         this._MEM.debug = false;
         this._CLK.debug = false;
         this._MMU.debug = true;
+        this._ITC.debug = true;
+        this._KBD.debug = false;
         
         //initial logs for all hardware pieces
         this.log("created");
@@ -70,6 +74,8 @@ export class System extends Hardware{
         this._MEM.log("created - Addressable space : " + this._MEM.getMemSize());
         this._CLK.log("created");
         this._MMU.log("created");
+        this._ITC.log("created");
+        this._KBD.log("created");
 
         //begins memory initialization by setting all addresses to 0x00
         this._MEM.initMemory();

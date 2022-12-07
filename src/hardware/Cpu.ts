@@ -269,11 +269,13 @@ export class Cpu extends Hardware implements ClockListener {
 
     interruptCheck() {
         let interrupt;
-        if (this.intContr.queueSize() != 0) {
-            interrupt = this.intContr.getNextInQueue;
-            process.stdout.write("test");
+        if (this.intContr.queueSize() > 0) {
+            interrupt = this.intContr.getNextInQueue();
+            let buffer = interrupt.outputBuffer;
+            while (buffer.length > 0) {
+                process.stdout.write(buffer.shift());
+            }
         }
-            
     }
 
     //uses the opcode stored in the instruction register to determine the pipeline order

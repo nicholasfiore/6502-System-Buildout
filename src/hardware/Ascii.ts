@@ -540,7 +540,12 @@ export class Ascii {
         return retChar;
     }
     
-    public static toBinary() {
+    public static toBinary(character : String) {
+        let retVal : number;
+        switch (character){
+            case "\0": {
 
+            }
+        }
     }
 }
