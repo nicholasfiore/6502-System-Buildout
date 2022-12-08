@@ -2,10 +2,8 @@
 import {Hardware} from "./Hardware";
 import {Mmu} from "./Mmu";
 import {ClockListener} from "./imp/ClockListener";
-import { Ascii } from "./Ascii";
+import { Ascii } from "./util/Ascii";
 import { InterruptController } from "./InterruptController";
-import { Console } from "console";
-import { System } from "../System";
 
 export class Cpu extends Hardware implements ClockListener {
     
