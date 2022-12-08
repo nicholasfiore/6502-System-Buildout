@@ -34,10 +34,14 @@ export class Gates {
     }
 
     //special gates
-    public static xor(inputA, inputB) {
+    public static xor(inputA: boolean, inputB: boolean) {
         let orRes = this.or(inputA, inputB);
         let nandRes = this.nand(inputA, inputB);
         let andRes = this.and(orRes, nandRes);
         return andRes;
     }
+
+    
+
+    
 }
