@@ -84,7 +84,13 @@ export class System extends Hardware{
         //initialization of a "static" program
         // this.labThreeStaticProgram();
         // this.powersProgram();
-        this.systemCallProgram();
+        // this.systemCallProgram();
+        // this.addNormal();
+        // this.subtractOne();
+        // this.subtractTwo();
+        // this.subtractThree();
+        // this.subtractFour();
+        this.positiveOverflow();
 
         //dump test program + extra slots in memory
         //this._MMU.memoryDump(0x0000, 0x000F);
@@ -217,6 +223,160 @@ export class System extends Hardware{
         this._MMU.memoryDump(0x0040, 0x0043);
         this._MMU.log("---------------------------");
         this._MMU.memoryDump(0x0050, 0x005C);
+
+        
+    }
+    //addition/subtraction/overflow/end-around carry checks
+    //addition normal
+    addNormal(){
+        this._MMU.writeImmediate(0x0000, 0xA9);
+        this._MMU.writeImmediate(0x0001, 0x3F);
+        this._MMU.writeImmediate(0x0002, 0x8D);
+        this._MMU.writeImmediate(0x0003, 0x10);
+        this._MMU.writeImmediate(0x0004, 0x00);
+        this._MMU.writeImmediate(0x0005, 0xA9);
+        this._MMU.writeImmediate(0x0006, 0x40);
+        this._MMU.writeImmediate(0x0007, 0x6D);
+        this._MMU.writeImmediate(0x0008, 0x10);
+        this._MMU.writeImmediate(0x0009, 0x00);
+        this._MMU.writeImmediate(0x000A, 0xA8);
+        this._MMU.writeImmediate(0x000B, 0xA2);
+        this._MMU.writeImmediate(0x000C, 0x01);
+        this._MMU.writeImmediate(0x000D, 0xFF);
+        this._MMU.writeImmediate(0x000E, 0x00);
+    }
+
+    //subtraction 1: 5 - 3 = 2
+    subtractOne() {
+        this._MMU.writeImmediate(0x0000, 0xA9);
+        this._MMU.writeImmediate(0x0001, 0x05);
+        this._MMU.writeImmediate(0x0002, 0x8D);
+        this._MMU.writeImmediate(0x0003, 0x10);
+        this._MMU.writeImmediate(0x0004, 0x00);
+        this._MMU.writeImmediate(0x0005, 0xA9);
+        this._MMU.writeImmediate(0x0006, 0xFD);
+        this._MMU.writeImmediate(0x0007, 0x6D);
+        this._MMU.writeImmediate(0x0008, 0x10);
+        this._MMU.writeImmediate(0x0009, 0x00);
+        this._MMU.writeImmediate(0x000A, 0xA8);
+        this._MMU.writeImmediate(0x000B, 0xA2);
+        this._MMU.writeImmediate(0x000C, 0x01);
+        this._MMU.writeImmediate(0x000D, 0xFF);
+        this._MMU.writeImmediate(0x000E, 0x00);
+    }
+
+    //subtraction 2: -3 + 5 = 2
+    subtractTwo() {
+        this._MMU.writeImmediate(0x0000, 0xA9);
+        this._MMU.writeImmediate(0x0001, 0xFD);
+        this._MMU.writeImmediate(0x0002, 0x8D);
+        this._MMU.writeImmediate(0x0003, 0x10);
+        this._MMU.writeImmediate(0x0004, 0x00);
+        this._MMU.writeImmediate(0x0005, 0xA9);
+        this._MMU.writeImmediate(0x0006, 0x05);
+        this._MMU.writeImmediate(0x0007, 0x6D);
+        this._MMU.writeImmediate(0x0008, 0x10);
+        this._MMU.writeImmediate(0x0009, 0x00);
+        this._MMU.writeImmediate(0x000A, 0xA8);
+        this._MMU.writeImmediate(0x000B, 0xA2);
+        this._MMU.writeImmediate(0x000C, 0x01);
+        this._MMU.writeImmediate(0x000D, 0xFF);
+        this._MMU.writeImmediate(0x000E, 0x00);
+    }
+
+    //subtraction 3: 2 - 5 = -3 (FD)
+    subtractThree() {
+        this._MMU.writeImmediate(0x0000, 0xA9);
+        this._MMU.writeImmediate(0x0001, 0x02);
+        this._MMU.writeImmediate(0x0002, 0x8D);
+        this._MMU.writeImmediate(0x0003, 0x10);
+        this._MMU.writeImmediate(0x0004, 0x00);
+        this._MMU.writeImmediate(0x0005, 0xA9);
+        this._MMU.writeImmediate(0x0006, 0xFB);
+        this._MMU.writeImmediate(0x0007, 0x6D);
+        this._MMU.writeImmediate(0x0008, 0x10);
+        this._MMU.writeImmediate(0x0009, 0x00);
+        this._MMU.writeImmediate(0x000A, 0xA8);
+        this._MMU.writeImmediate(0x000B, 0xA2);
+        this._MMU.writeImmediate(0x000C, 0x01);
+        this._MMU.writeImmediate(0x000D, 0xFF);
+        this._MMU.writeImmediate(0x000E, 0x00);
+    }
+
+    //subtraction four: -5 +2 = -3
+    subtractFour() {
+        this._MMU.writeImmediate(0x0000, 0xA9);
+        this._MMU.writeImmediate(0x0001, 0xFB);
+        this._MMU.writeImmediate(0x0002, 0x8D);
+        this._MMU.writeImmediate(0x0003, 0x10);
+        this._MMU.writeImmediate(0x0004, 0x00);
+        this._MMU.writeImmediate(0x0005, 0xA9);
+        this._MMU.writeImmediate(0x0006, 0x02);
+        this._MMU.writeImmediate(0x0007, 0x6D);
+        this._MMU.writeImmediate(0x0008, 0x10);
+        this._MMU.writeImmediate(0x0009, 0x00);
+        this._MMU.writeImmediate(0x000A, 0xA8);
+        this._MMU.writeImmediate(0x000B, 0xA2);
+        this._MMU.writeImmediate(0x000C, 0x01);
+        this._MMU.writeImmediate(0x000D, 0xFF);
+        this._MMU.writeImmediate(0x000E, 0x00);
+    }
+
+    //positive overflow (result should be 40)
+    positiveOverflow() {
+        this._MMU.writeImmediate(0x0000, 0xA9);
+        this._MMU.writeImmediate(0x0001, 0x60);
+        this._MMU.writeImmediate(0x0002, 0x8D);
+        this._MMU.writeImmediate(0x0003, 0x10);
+        this._MMU.writeImmediate(0x0004, 0x00);
+        this._MMU.writeImmediate(0x0005, 0xA9);
+        this._MMU.writeImmediate(0x0006, 0x60);
+        this._MMU.writeImmediate(0x0007, 0x6D);
+        this._MMU.writeImmediate(0x0008, 0x10);
+        this._MMU.writeImmediate(0x0009, 0x00);
+        this._MMU.writeImmediate(0x000A, 0xA8);
+        this._MMU.writeImmediate(0x000B, 0xA2);
+        this._MMU.writeImmediate(0x000C, 0x01);
+        this._MMU.writeImmediate(0x000D, 0xFF);
+        this._MMU.writeImmediate(0x000E, 0x00);
+    }
+
+    //double negative
+    doubleNegatives() {
+        this._MMU.writeImmediate(0x0000, 0xA9);
+        this._MMU.writeImmediate(0x0001, 0xF0);
+        this._MMU.writeImmediate(0x0002, 0x8D);
+        this._MMU.writeImmediate(0x0003, 0x10);
+        this._MMU.writeImmediate(0x0004, 0x00);
+        this._MMU.writeImmediate(0x0005, 0xA9);
+        this._MMU.writeImmediate(0x0006, 0xED);
+        this._MMU.writeImmediate(0x0007, 0x6D);
+        this._MMU.writeImmediate(0x0008, 0x10);
+        this._MMU.writeImmediate(0x0009, 0x00);
+        this._MMU.writeImmediate(0x000A, 0xA8);
+        this._MMU.writeImmediate(0x000B, 0xA2);
+        this._MMU.writeImmediate(0x000C, 0x01);
+        this._MMU.writeImmediate(0x000D, 0xFF);
+        this._MMU.writeImmediate(0x000E, 0x00);
+    }
+
+    //negative overflow
+    negativeOverflow() {
+        this._MMU.writeImmediate(0x0000, 0xA9);
+        this._MMU.writeImmediate(0x0001, 0x95);
+        this._MMU.writeImmediate(0x0002, 0x8D);
+        this._MMU.writeImmediate(0x0003, 0x10);
+        this._MMU.writeImmediate(0x0004, 0x00);
+        this._MMU.writeImmediate(0x0005, 0xA9);
+        this._MMU.writeImmediate(0x0006, 0xA0);
+        this._MMU.writeImmediate(0x0007, 0x6D);
+        this._MMU.writeImmediate(0x0008, 0x10);
+        this._MMU.writeImmediate(0x0009, 0x00);
+        this._MMU.writeImmediate(0x000A, 0xA8);
+        this._MMU.writeImmediate(0x000B, 0xA2);
+        this._MMU.writeImmediate(0x000C, 0x01);
+        this._MMU.writeImmediate(0x000D, 0xFF);
+        this._MMU.writeImmediate(0x000E, 0x00);
     }
 }
 
