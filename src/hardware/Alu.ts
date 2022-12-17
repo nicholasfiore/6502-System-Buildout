@@ -31,10 +31,7 @@ export class Alu extends Hardware {
     }
 
     //full adder
-    public fullAdder(inArr: boolean[], carryIn) {
-        let bitA = inArr[0];
-        let bitB = inArr[1];
-
+    public fullAdder(bitA: boolean, bitB: boolean, carryIn) {
         let halfAdder1 = this.halfAdder(bitA, bitB);
         let halfAdder2 = this.halfAdder(halfAdder1[0], carryIn);
 
@@ -49,14 +46,31 @@ export class Alu extends Hardware {
     }
 
     //this is what performs addition with 8 bits. returns the value output.
-    public eightBitAdder(byteA: number, byteB: number, carryIn) {
-        let fullAdderArr : boolean[] = [8];
-        if (carryIn) {
-            fullAdderArr[0] = this.fullAdder()[0];
+    public eightBitAdder(byteA: number, byteB: number, carryIn: boolean) {
+        let byteAArr = this.byteToArray(byteA);
+        let byteBArr = this.byteToArray(byteB);
+        let result = [];
+        let carry = carryIn;
+        for (let i = 0; i < 8; i++) {
+            let fullAdderReturn = this.fullAdder(byteAArr[i], byteBArr[i], carry)
+            carry = fullAdderReturn[1];
+            result[i] = fullAdderReturn[0];
         }
-        for (let num of fullAdderArr) {
-            
+        if (carry)
+            this.overflowFlag = true;
+        return result;
+    }
+
+    public byteToArray(byte: number) : boolean[] {
+        let byteStr = byte.toString(2);
+        let retArr = [];
+        for (let i = 0; i < byteStr.length; i++) {
+            if (byteStr[i] === '1')
+                retArr[i] = true;
+            else if (byteStr[i] === '0')
+                retArr[i] = false;
         }
+        return retArr;
     }
 }
 

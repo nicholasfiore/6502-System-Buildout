@@ -1,5 +1,4 @@
 // import statements for hardware
-import { listeners } from "process";
 import { Clock } from "./hardware/Clock";
 import {Cpu} from "./hardware/Cpu";
 import {Hardware} from "./hardware/Hardware";
