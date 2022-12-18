@@ -13,7 +13,7 @@ import { Alu } from "./hardware/Alu";
  */
 // Initialization Parameters for Hardware
 // Clock cycle interval
-const CLOCK_INTERVAL= 500;              // This is in ms (milliseconds) so 1000 = 1 second, 100 = 1/10 second
+const CLOCK_INTERVAL= 100;              // This is in ms (milliseconds) so 1000 = 1 second, 100 = 1/10 second
                                         // A setting of 100 is equivalent to 10hz, 1 would be 1,000hz or 1khz,
                                         // .001 would be 1,000,000 or 1mhz. Obviously you will want to keep this
                                         // small, I recommend a setting of 100, if you want to slow things down
@@ -96,7 +96,9 @@ export class System extends Hardware{
         // this.positiveOverflow();
         // this.doubleNegatives();
         // this.negativeOverflow();
+        this.lucasSequence();
 
+        
         //dump test program + extra slots in memory
         //this._MMU.memoryDump(0x0000, 0x000F);
 
@@ -382,6 +384,97 @@ export class System extends Hardware{
         this._MMU.writeImmediate(0x000C, 0x01);
         this._MMU.writeImmediate(0x000D, 0xFF);
         this._MMU.writeImmediate(0x000E, 0x00);
+    }
+
+    //assignment 2 fibonacci/lucas #
+    lucasSequence() {
+        this._MMU.writeImmediate(0x0000, 0xA2);
+        this._MMU.writeImmediate(0x0001, 0x01);
+
+        this._MMU.writeImmediate(0x0002, 0xA9);
+        this._MMU.writeImmediate(0x0003, 0x00);
+
+        this._MMU.writeImmediate(0x0004, 0x8D);
+        this._MMU.writeImmediate(0x0005, 0x34);
+        this._MMU.writeImmediate(0x0006, 0x01);
+
+        this._MMU.writeImmediate(0x0007, 0xA9);
+        this._MMU.writeImmediate(0x0008, 0x02);
+
+        this._MMU.writeImmediate(0x0009, 0x8D);
+        this._MMU.writeImmediate(0x000A, 0x31);
+        this._MMU.writeImmediate(0x000B, 0x01);
+
+        this._MMU.writeImmediate(0x000C, 0xA8);
+
+        this._MMU.writeImmediate(0x000D, 0xFF);
+
+        this._MMU.writeImmediate(0x000E, 0xA9);
+        this._MMU.writeImmediate(0x000F, 0x01);
+
+        this._MMU.writeImmediate(0x0010, 0x8D);
+        this._MMU.writeImmediate(0x0011, 0x32);
+        this._MMU.writeImmediate(0x0012, 0x01);
+
+        this._MMU.writeImmediate(0x0013, 0xA8);
+
+        this._MMU.writeImmediate(0x0014, 0xFF);
+
+        this._MMU.writeImmediate(0x0015, 0xA9);
+        this._MMU.writeImmediate(0x0016, 0x06);
+
+        this._MMU.writeImmediate(0x0017, 0x8D);
+        this._MMU.writeImmediate(0x0018, 0x35);
+        this._MMU.writeImmediate(0x0019, 0x01);
+
+        this._MMU.writeImmediate(0x001A, 0xAD);
+        this._MMU.writeImmediate(0x001B, 0x31);
+        this._MMU.writeImmediate(0x001C, 0x01);
+
+        this._MMU.writeImmediate(0x001D, 0x6D);
+        this._MMU.writeImmediate(0x001E, 0x32);
+        this._MMU.writeImmediate(0x001F, 0x01);
+
+        this._MMU.writeImmediate(0x0020, 0x8D);
+        this._MMU.writeImmediate(0x0021, 0x33);
+        this._MMU.writeImmediate(0x0022, 0x01);
+
+        this._MMU.writeImmediate(0x0023, 0xA2);
+        this._MMU.writeImmediate(0x0024, 0x01);
+
+        this._MMU.writeImmediate(0x0025, 0xA8);
+
+        this._MMU.writeImmediate(0x0026, 0xFF);
+        
+        this._MMU.writeImmediate(0x0027, 0xAD);
+        this._MMU.writeImmediate(0x0028, 0x32);
+        this._MMU.writeImmediate(0x0029, 0x01);
+
+        this._MMU.writeImmediate(0x002A, 0x8D);
+        this._MMU.writeImmediate(0x002B, 0x31);
+        this._MMU.writeImmediate(0x002C, 0x01);
+        
+        this._MMU.writeImmediate(0x002D, 0x98);
+
+        this._MMU.writeImmediate(0x002E, 0x8D);
+        this._MMU.writeImmediate(0x002F, 0x32);
+        this._MMU.writeImmediate(0x0030, 0x01);
+
+        this._MMU.writeImmediate(0x0031, 0xAE);
+        this._MMU.writeImmediate(0x0032, 0x34);
+        this._MMU.writeImmediate(0x0033, 0x01);
+
+        this._MMU.writeImmediate(0x0034, 0xEC);
+        this._MMU.writeImmediate(0x0035, 0x35);
+        this._MMU.writeImmediate(0x0036, 0x01);
+
+        this._MMU.writeImmediate(0x0037, 0xEE);
+        this._MMU.writeImmediate(0x0038, 0x34);
+        this._MMU.writeImmediate(0x0039, 0x01);
+
+        this._MMU.writeImmediate(0x003A, 0xD0);
+        this._MMU.writeImmediate(0x003B, 0xDE);
+
     }
 }
 

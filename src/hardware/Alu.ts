@@ -20,7 +20,7 @@ export class Alu extends Hardware {
 
     public addWithCarry(accumulator: number, readVal: number) {
         this.negativeFlag = false; //reset negative flag
-        if ((Math.abs(accumulator - 0xFF) > readVal && accumulator > 0x7F) || (Math.abs(readVal - 0xFF) > accumulator && readVal > 0x7F)) {
+        if ((Math.abs(accumulator - 0xFF) > readVal && accumulator > 0x7F) || (Math.abs(readVal - 0xFF) > accumulator && readVal > 0x7F) || (accumulator > 0x7F && readVal > 0x7F)) {
             this.negativeFlag = true;
         }
         let retVal = this.eightBitAdder(accumulator, readVal, this.overflowFlag);
