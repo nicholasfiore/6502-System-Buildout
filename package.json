@@ -4,7 +4,7 @@
   "description": "A Virtual 6502 Computer built in TypeScript running in Node.js",
   "main": "dist/System.js",
   "dependencies": {
-    "typescript": "^3.7.4"
+    "typescript": "^3.9.10"
   },
   "devDependencies": {
     "@types/node": "^13.13.52"

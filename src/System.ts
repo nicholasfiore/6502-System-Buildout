@@ -6,6 +6,7 @@ import { InterruptController } from "./hardware/InterruptController";
 import { Keyboard } from "./hardware/Keyboard";
 import {Memory} from "./hardware/Memory";
 import { Mmu } from "./hardware/Mmu";
+import { Alu } from "./hardware/Alu";
 
 /*
     Constants
@@ -25,8 +26,10 @@ export class System extends Hardware{
     private _MEM : Memory = null;
     private _CLK : Clock = null;
     private _MMU : Mmu = null;
+    private _ALU : Alu = null;
     private _ITC : InterruptController = null;
     private _KBD : Keyboard = null;
+    
     
     public running: boolean = false;
 
@@ -45,7 +48,8 @@ export class System extends Hardware{
         this._ITC = new InterruptController();
         this._KBD = new Keyboard(this._ITC);
         this._MMU = new Mmu(this._MEM);
-        this._CPU = new Cpu(this._MMU, this._ITC);
+        this._ALU = new Alu();
+        this._CPU = new Cpu(this._MMU, this._ITC, this._ALU);
 
         
         /*
@@ -89,7 +93,9 @@ export class System extends Hardware{
         // this.subtractTwo();
         // this.subtractThree();
         // this.subtractFour();
-        this.positiveOverflow();
+        // this.positiveOverflow();
+        // this.doubleNegatives();
+        // this.negativeOverflow();
 
         //dump test program + extra slots in memory
         //this._MMU.memoryDump(0x0000, 0x000F);
