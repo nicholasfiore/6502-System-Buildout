@@ -13,6 +13,7 @@ export class InterruptController extends Hardware {
         this.name = "INT";
     }
 
+    //adds an interrupt into the interrupt queue depending on its priority
     acceptInterrupt(device : Interrupt) {
         if (this.interruptQueue.length > 0) {
             for(let e of this.interruptQueue) {
@@ -25,6 +26,7 @@ export class InterruptController extends Hardware {
         }
     }
 
+    //adds a device to the interrupt controller
     public addDevice(device : Interrupt) {
         this.connectedHardware.push(device);
     }

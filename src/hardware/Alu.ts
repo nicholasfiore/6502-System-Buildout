@@ -1,15 +1,15 @@
 import { Hardware } from "./Hardware"
 import { Gates } from "./util/Gates";
 
+/* 
+* ALU class handles arithmetic operations, accounting for 2's comp and overflow
+*/
+
 export class Alu extends Hardware {
     //status flags that are output by the ALU, read by the CPU as a whole
     overflowFlag : boolean;
     zeroFlag : boolean;
     negativeFlag : boolean;
-
-    //private flag used only internally by the ALU
-    private accNeg = false;
-    private readNeg = false;
 
     constructor() {
         super();
@@ -18,9 +18,12 @@ export class Alu extends Hardware {
         this.negativeFlag = false;
     }
 
+    //actual adding functions
     public addWithCarry(accumulator: number, readVal: number) {
+        this.overflowFlag = false; //reset overflow
         this.negativeFlag = false; //reset negative flag
-        if ((Math.abs(accumulator - 0xFF) > readVal && accumulator > 0x7F) || (Math.abs(readVal - 0xFF) > accumulator && readVal > 0x7F) || (accumulator > 0x7F && readVal > 0x7F)) {
+        this.zeroFlag = false; //reset zero flag
+        if ((Math.abs(accumulator - 0xFF) > readVal && accumulator > 0x7F) || (Math.abs(readVal - 0xFF) > accumulator && readVal > 0x7F) || (accumulator > 0x7F && readVal > 0x7F && accumulator + readVal <= 0xFF)) { //check to see if the result will be negative, accounting for negative overflow
             this.negativeFlag = true;
         }
         let retVal = this.eightBitAdder(accumulator, readVal, this.overflowFlag);
@@ -86,9 +89,13 @@ export class Alu extends Hardware {
             resultStr = tempArr[0] + tempArr[1] + tempArr[2] + tempArr[3] + tempArr[4] + tempArr[5] + tempArr[6] + tempArr[7];
         }
         let result = parseInt(resultStr, 2);
+        if (result === 0) {
+            this.zeroFlag = true;
+        }
         return result;
     }
 
+    //converts a given byte to an array of boolean values representing bits
     public byteToArray(byte: number) : boolean[] {
         let byteStr = byte.toString(2).padStart(8, '0');
         let retArr = [];

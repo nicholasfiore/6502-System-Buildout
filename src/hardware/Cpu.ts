@@ -6,6 +6,10 @@ import { Ascii } from "./util/Ascii";
 import { InterruptController } from "./InterruptController";
 import { Alu } from "./Alu";
 
+/*
+* The brain of the computer. Handles everything necessary for the CPU, including the fetch-decode-execute cycle, receiving and running interrupts, and handling arithmetic with the ALU.
+*/
+
 export class Cpu extends Hardware implements ClockListener {
     
     private cpuClockCount : number;
@@ -159,32 +163,7 @@ export class Cpu extends Hardware implements ClockListener {
             }
             case 0x6D: { //add with carry
                 this.accumulator = this.alu.addWithCarry(this.accumulator, this.mmu.read());
-
-                // let acc = this.accumulator;
-                // let read = this.mmu.read();
-                // //handles two's complement
-                // if (acc > 0x7F)
-                //     acc = acc - 0xFF;
-                // if (read > 0x7F)
-                //     read = read - 0xFF;
-                
-                // let result = acc + read;
-                // if (result > 0xFF && read > 0 && acc > 0) { //positive overflow
-                //     result = result - 0xFF;
-                //     this.carryFlag = true;
-                // }
-
-                // if (result < 0 && acc < 0 && acc < 0) { //negative underflow
-                //     result = result + 0xFF;
-                // }
-                
-
-                // if (result < 0 && ((acc < 0  && !(read < 0)) || (read < 0  && !(acc < 0)))) //end around carry
-                //     result = result - 0x1;
-                
-                // //this.accumulator += this.mmu.read();
-                // this.accumulator = result;
-                // break;
+                this.carryFlag = this.alu.overflowFlag;
             }
             case 0xA2: { //load x reg with a constant
                 this.xReg = byte;
